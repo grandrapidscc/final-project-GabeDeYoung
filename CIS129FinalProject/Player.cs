@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Player
+namespace Players
 {
     public class Player
     {
@@ -96,6 +96,14 @@ namespace Player
         public int getPlayerMP()
         {
             return MP;
+        }
+
+        //playeraction printer
+        public static void printPlayerActions()
+        {
+            Console.WriteLine("1. To Attack.");
+            Console.WriteLine("2. To Heal.");
+            Console.WriteLine("3. To Attempt to Flee.");
         }
 
     }
