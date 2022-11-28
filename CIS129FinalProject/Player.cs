@@ -28,7 +28,7 @@ namespace Players
                 this.HP += 3;
                 this.MP -= 5;
                 Console.WriteLine("Healing energy infuses your body");
-                if (HP > 100)
+                if (HP > 95)
                 {
                     int totalSum = 3 - (this.HP - 100);
                     setPlayerHP(100);
@@ -40,19 +40,8 @@ namespace Players
             else { Console.WriteLine("Not enough mana"); }
         }
         
-        public int Fireball()
-        {
-            if(MP >= 3)
-            {
-                MP -= 3;
-                Console.WriteLine("You shoot a ball of fire from your fingertips");
-                return 5;
-            }
-            else { Console.WriteLine("Not enough mana"); return 0; }
 
-        }
-
-        public bool Flee()
+        public bool FleeCheck()
         {
             bool succeed;
             Random rand = new Random();
@@ -68,14 +57,7 @@ namespace Players
 
 
         //Powerups
-        public void HPot()
-        {
-            Console.WriteLine("FIXME: Add healing from HPot");
-        }
-        public void MPot()
-        {
-            Console.WriteLine("FIXME: Add MP from MPot");
-        }
+        
 
 
 
@@ -101,9 +83,11 @@ namespace Players
         //playeraction printer
         public static void printPlayerActions()
         {
-            Console.WriteLine("1. To Attack.");
-            Console.WriteLine("2. To Heal.");
-            Console.WriteLine("3. To Attempt to Flee.");
+            Console.WriteLine("Please type an action.");
+            Console.WriteLine();
+            Console.WriteLine("Attack.");
+            Console.WriteLine("Heal.");
+            Console.WriteLine("Attempt to Flee.");
         }
 
     }

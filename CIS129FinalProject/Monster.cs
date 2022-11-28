@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Players;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -109,6 +110,38 @@ namespace Monsters
         public string getAttDesc()
         {
             return attDesc;
+        }
+        
+
+
+
+        //monster spawner based on room.
+
+        public Monster monsterMaker(string monsterType)
+        {
+            Monster monster = null;
+
+
+            if (monsterType.Equals("goblin"))
+            {
+                monster = new Monster("goblin");
+            }
+            else if (monsterType.Equals("orc"))
+            {
+                monster = new Monster("orc");
+            }
+            else if (monsterType.Equals("banshee"))
+            { 
+                monster = new Monster("banshee");
+            }
+            else
+            {
+                monster = new Monster();
+            }
+
+
+
+            return monster;
         }
 
     }

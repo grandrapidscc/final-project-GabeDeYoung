@@ -14,6 +14,8 @@ namespace MapAndNav
         private string desc;
         private string powerupType;
 
+        Monster monster = new Monster();
+
         //room constructor
         public Room() {
             this.exit = false;
@@ -21,8 +23,9 @@ namespace MapAndNav
             this.enemyPres = false;
             desc = "This room is bland and unadorned.";
             monsterType = "";
+            monster = new Monster();
         }
-        public Room(string monsterType, string desc, bool powerup, string powerupType)
+        public Room(string monsterType, string desc, bool powerup, string powerupType, Monster monsterObj)
         {
             enemyPres = true;
             this.exit = false;
@@ -30,6 +33,7 @@ namespace MapAndNav
             this.monsterType = monsterType;
             this.desc = desc;
             this.powerupType = powerupType;
+            monster = monsterObj;
         }
 
 
@@ -39,9 +43,9 @@ namespace MapAndNav
         {
             this.exit = true;
         }
-        public void setPowUpTrue()
+        public void setPowUpBool(bool input)
         {
-            this.powerup = true;
+            this.powerup = input;
         }
         public void setPowType(string type)
         {
@@ -51,9 +55,9 @@ namespace MapAndNav
         {
             return this.powerupType;
         }
-        public void setEnemyTrue()
+        public void setEnemy(bool input)
         {
-            this.enemyPres = true;
+            this.enemyPres = input;
         }
         public void setDesc(string desc)
         {
@@ -66,16 +70,33 @@ namespace MapAndNav
         public void setMonsterType(string monsterType)
         {
             this.monsterType = monsterType;
-            setEnemyTrue();
+            setEnemy(true);
         }
         public bool getExit()
         {
             return exit;
         }
+        public bool getPowBool()
+        {
+            return powerup;
+        }
         public String getMonsterType()
         {
             return monsterType;
         }
+        public bool getMonsterPrez()
+        {
+            return enemyPres;
+        }
+
+        //set and get commands for monster obj in room
+
+        
+
+
+
+
+
         //print room commands.
 
         public void printRoom(Room roomNum)
