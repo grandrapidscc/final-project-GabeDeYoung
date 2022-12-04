@@ -89,14 +89,6 @@ namespace MapAndNav
             return enemyPres;
         }
 
-        //set and get commands for monster obj in room
-
-        
-
-
-
-
-
         //print room commands.
 
         public void printRoom(Room roomNum)
@@ -141,43 +133,43 @@ namespace MapAndNav
             {
                 Console.WriteLine("Please enter a direction to travel. North, East, or West.");
                 Console.WriteLine("There is a wall to the South.");
-                invalDirection = "South";
+                invalDirection = "South south";
             }
             else if (playerLocation + 4 % 5 == 0 && playerLocation != 1 && playerLocation != 21)
             {
                 Console.WriteLine("Please enter a direction to travel. North, South, or East");
                 Console.WriteLine("There is a wall to the West.");
-                invalDirection = "West";
+                invalDirection = "West west";
             }
             else if (playerLocation % 5 == 0 && playerLocation != 5 && playerLocation != 25)
             {
                 Console.WriteLine("Please enter a direction to travel. North, South, or West.");
                 Console.WriteLine("There is a wall to the East.");
-                invalDirection = "East";
+                invalDirection = "East east";
             }
             else if (playerLocation == 1)
             {
                 Console.WriteLine("Please enter a direction to travel. South, or East.");
                 Console.WriteLine("There is a wall to the North and the West.");
-                invalDirection = "North West";
+                invalDirection = "North north West west";
             }
             else if (playerLocation == 21)
             {
                 Console.WriteLine("Please enter a direction to travel. North, or East.");
                 Console.WriteLine("There is a wall to the South and the West.");
-                invalDirection = "South West";
+                invalDirection = "south west South West";
             }
             else if (playerLocation == 5)
             {
                 Console.WriteLine("Please enter a direction to travel. South, or West.");
                 Console.WriteLine("There is a wall to the North and the East.");
-                invalDirection = "North East";
+                invalDirection = "North north East east";
             }
             else if (playerLocation == 25)
             {
                 Console.WriteLine("Please enter a direction to travel. North, or West.");
                 Console.WriteLine("There is a wall to the South and the East.");
-                invalDirection = "South East";
+                invalDirection = "South south East east";
             }
             return invalDirection;
         }

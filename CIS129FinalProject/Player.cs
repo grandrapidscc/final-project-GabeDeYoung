@@ -25,16 +25,19 @@ namespace Players
         {
             if(MP >= 5)
             {
-                this.HP += 3;
                 this.MP -= 5;
                 Console.WriteLine("Healing energy infuses your body");
-                if (HP > 95)
+                if (HP >= 98)
                 {
                     int totalSum = 3 - (this.HP - 100);
                     setPlayerHP(100);
                     Console.WriteLine("Health healed: " + totalSum);
                 }
-                else { Console.WriteLine("Health healed: 5"); }
+                else if(HP > 0 && HP < 98){ 
+
+                    Console.WriteLine("Health healed: 3");
+                    setPlayerHP(HP + 3);
+                }
                 
             }
             else { Console.WriteLine("Not enough mana"); }
@@ -50,16 +53,6 @@ namespace Players
             else { succeed = false; }
             return succeed;
         }
-
-
-
-
-
-
-        //Powerups
-        
-
-
 
 
         //Setters and getters.
@@ -80,7 +73,7 @@ namespace Players
             return MP;
         }
 
-        //playeraction printer
+        //player action printer
         public static void printPlayerActions()
         {
             Console.WriteLine("Please type an action.");
@@ -88,6 +81,7 @@ namespace Players
             Console.WriteLine("Attack.");
             Console.WriteLine("Heal.");
             Console.WriteLine("Attempt to Flee.");
+            Console.WriteLine();
         }
 
     }

@@ -19,22 +19,24 @@ class Program
         int exitLocation = rnd.Next(1, 25);
         bool quitCheck = false;
         bool fleeCheck = false;
+        bool encountBFor = false;
+        bool rndCheck = rnd.Next(2) == 1;
         string navCheck = "";
-        string sInput;
+        string sInput = "A";
+        string invalDirection;
+        String[] playerActions;
+        playerActions = new string[3]{"attack", "flee", "heal"};
 
         Monster blankMonster = new Monster();
 
-        //ROOM START TEST VARIABLES REMOVE LATER
-        playerLocation = 2;
-        exitLocation = 1;
 
 
         //Player
 
         Player player1 = new Player();
 
-
-        Console.WriteLine(playerLocation + " " + exitLocation);
+        //PRINTS OUT PLAYER LOCATION AND EXIT FOR TESTING
+        //Console.WriteLine(playerLocation + " " + exitLocation);
 
         
 
@@ -65,7 +67,7 @@ class Program
         while (quitCheck != true)
         {
             //REMOVE LATER INFO ON CURRENT LOCATION
-
+            sInput.ToLower();
 
 
 
@@ -104,26 +106,33 @@ class Program
                 }
 
 
-                
+
                 //Checks if player is in empty room or not.
-                if(currRoom.getMonsterType() == "")
+                if (currRoom.getMonsterPrez() == false)
                 {
                     //sets players last location for flee.
                     
                     //Logic that tells player available directions they can travel.
-                    currRoom.printDesc();
+                    
 
-                    string invalDirection = Room.printNavigation(playerLocation);
+                    invalDirection = Room.printNavigation(playerLocation);
                     String[] invalDi = invalDirection.Split(" ");
+                    
                     
 
 
-                    sInput = Console.ReadLine();
+                    sInput = Console.ReadLine().ToLower();
+                    
                     bool runCheck = true;
 
                     //While loop to prevent invalid directional inputs.
                     while (runCheck == true)
                     {
+                        if (playerActions.Contains(sInput))
+                        {
+                            Console.WriteLine("Please input a valid direction...");
+                            sInput = Console.ReadLine();
+                        }
                         if (invalDi.Contains(sInput) || Regex.IsMatch(sInput, @"[!@#$%^&(),.?:{}|<>1-9""]"))
                         {
                             Console.WriteLine("Please input a valid direction...");
@@ -135,28 +144,28 @@ class Program
                     //If statements to navigate player through the map.
                     if(string.Equals(sInput,"South", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("You travel through the door on your South.");
+                        Console.WriteLine("You travel through the door to your South.");
                         playerLocation += 5;
                         playerLastMoved = -5;
                         continue;
                     }
                     else if(string.Equals(sInput, "EAST", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("You travel through the door on your East.");
+                        Console.WriteLine("You travel through the door to your East.");
                         playerLocation += 1;
                         playerLastMoved = -1;
                         continue;
                     }
                     else if(string.Equals(sInput, "WEST", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("You travel through the door on your West.");
+                        Console.WriteLine("You travel through the door to your West.");
                         playerLocation -= 1;
                         playerLastMoved = 1;
                         continue;
                     }
                     else if (string.Equals(sInput, "NORTH", StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine("You travel through the door on your East.");
+                        Console.WriteLine("You travel through the door to your North.");
                         playerLocation -= 5;
                         playerLastMoved = 5;
                         continue;
@@ -171,44 +180,55 @@ class Program
 
                     string currMonster = currRoom.getMonsterType();
 
-                    blankMonster = blankMonster.monsterMaker(currMonster);
+                    if (encountBFor == false)
+                    {
+                        blankMonster = blankMonster.monsterMaker(currMonster);
+                    }
+                    encountBFor = false;
 
+                    //50/50 check to see if monster gets an attack off first.
 
-                    //50/50 check to see if mosnter gets an attack off first.
+                    if(rndCheck == true)
+                    {
+                        Console.WriteLine("A " + currRoom.getMonsterType() + " surprises you!");
+                        player1.setPlayerHP(player1.getPlayerHP() - blankMonster.getAttack());
+                        Console.WriteLine("You have " + player1.getPlayerHP() + " health.");
+                        Console.WriteLine();
+
+                    }
+
+                    currRoom.printDesc();
 
                     Console.WriteLine("You encounter a " + currMonster + "!");
                     Console.WriteLine("Its current HP is " + blankMonster.getHP());
-                    Console.WriteLine("Press...");
                     Player.printPlayerActions();
                     Console.WriteLine();
                     sInput = Console.ReadLine();
+                    Console.WriteLine();
 
 
                     //fight loop.
 
-                    while (blankMonster.getHP() > 0 || player1.getPlayerHP() <= 0 || fleeCheck == false)
+                    while (blankMonster.getHP() > 0 || player1.getPlayerHP() > 0 || fleeCheck != false)
                     {
+                        //attack action
                         if(string.Equals(sInput,"ATTACK", StringComparison.OrdinalIgnoreCase))
                         {
                             Console.WriteLine("You blast the " + currMonster + " with your arcane might!");
                             blankMonster.setHP(blankMonster.getHP() - 5);
                             player1.setPlayerMP(player1.getPlayerMP() - 3);
                             Console.WriteLine("You have " + player1.getPlayerMP() + " mana.");
-                            //check print out a neat zero instead of negatives for monster hp.
-                           
                             
                         }
+                        //heal action
                         else if (string.Equals(sInput, "HEAL", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (player1.getPlayerHP() >= 100)
-                            {
-                                Console.WriteLine("You heal yourself with magic!");
-                                player1.Heal();
-                                Console.WriteLine("You have " + player1.getPlayerHP() + " health.");
-                                Console.WriteLine("You have " + player1.getPlayerMP() + " mana.");
-                            }
+                            
+                            player1.Heal();
+                            Console.WriteLine();
 
                         }
+                        //flee action
                         else if (string.Equals(sInput, "FLEE", StringComparison.OrdinalIgnoreCase) && playerLastMoved != 0)
                         {
                             if(player1.FleeCheck() == false)
@@ -221,12 +241,15 @@ class Program
                                 Console.WriteLine();
                                 playerLocation += playerLastMoved;
                                 fleeCheck = true;
+                                encountBFor = true;
                                 break;
                             }
                         }
+                        //flee action if player trys to flee an encounter in the starting room
                         else if (string.Equals(sInput, "FLEE", StringComparison.OrdinalIgnoreCase) && playerLastMoved == 0)
                         {
                             Console.WriteLine("You cannot flee into the unknown.");
+                            Console.WriteLine();
                         }
                         else
                         {
@@ -236,9 +259,10 @@ class Program
                         //Check for player HP
                         
 
-                        //check for mosnter HP
+                        //check for monster HP
                         if(blankMonster.getHP() > 0)
                         {
+                            //monster attack then check for player HP
                             Console.WriteLine("The " + currMonster + " " + blankMonster.getAttDesc() + "s");
                             player1.setPlayerHP(player1.getPlayerHP() - blankMonster.getAttack());
                             Console.WriteLine("You have " + player1.getPlayerHP() + " health.");
@@ -247,13 +271,17 @@ class Program
                                 fleeCheck = false;
                                 break;
                             }
+                            //taking player actions
                             Player.printPlayerActions();
+                            Console.WriteLine();
                             sInput = Console.ReadLine();
                         }
+                        //checking if monster HP drops below zero
                         else if(blankMonster.getHP() <= 0)
                         {
                             Console.WriteLine("You have slain the " + currMonster + "!");
                             currRoom.setEnemy(false);
+                            fleeCheck = false;
                             break;
                         }
                     }
@@ -277,34 +305,12 @@ class Program
                             currRoom.setPowUpBool(false);
                             
                         }
-                        Room.printNavigation(playerLocation);
-                        Console.ReadLine();
+                       
                     }
-                    
-
-
-
-
-
 
                 }
 
-
-
-
-
             }
-
-
-
-
-
-
-
-
-
         }
-
-
     }
 }
